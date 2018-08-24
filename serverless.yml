@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: convohist-pubsub-sns-iot-sqs
+service: convohist-pubsub-sns-fcm-sqs
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -70,8 +70,8 @@ functions:
       NODE_ENV: ${self:provider.stage}
       HANDLED_MESSAGE_SNS_TOPIC_ARN: ${file(./creds/${self:provider.stage}/sns_topics.js):vars.HANDLED_MESSAGE_SNS_TOPIC_ARN}
 
-  checkReceiptsForLeadMsg:
-    handler: handler.checkReceiptsForLeadMsg
+  pushToOperators:
+    handler: handler.pushToOperators
     timeout: 120
     environment:
       NODE_ENV: ${self:provider.stage}

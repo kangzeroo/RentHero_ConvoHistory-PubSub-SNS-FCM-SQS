@@ -1,6 +1,6 @@
 
 module.exports = function(event, context, callback) {
-  console.log('------ checkReceiptsForLeadMsg() ------')
+  console.log('------ pushToOperators() ------')
   console.log('------ LAMBDA EVENT OBJECT ------')
   console.log(event)
   console.log(event.Records[0].Sns)
@@ -11,7 +11,7 @@ module.exports = function(event, context, callback) {
   const response = {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function (checkReceiptsForLeadMsg) executed successfully!',
+      message: 'Go Serverless v1.0! Your function (pushToOperators) executed successfully!',
       input: event,
     }),
   };
