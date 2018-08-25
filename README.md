@@ -1,5 +1,11 @@
 # CONVO_HISTORY + Pub/Sub + SNS + FCM + SQS for Push Notifications
 This serverless service handles the pub/sub and push notifications for messages being saved into DYN:CONVO_HISTORY table. We use FCM, there is no IoT!
+
+
+# TODO:
+- setup the params.MessageGroupId on sqsAPI.sendToOperatorSQS(params) in pushToOperators.js
+
+
 It works like this:
 
 

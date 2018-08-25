@@ -75,6 +75,14 @@ functions:
     timeout: 120
     environment:
       NODE_ENV: ${self:provider.stage}
+      OPERATOR_SQS_QUEUE: ${file(./creds/${self:provider.stage}/sqs_queues.js):vars.OPERATOR_SQS_QUEUE}
+
+  grabFromOperatorQueue:
+    handler: handler.grabFromOperatorQueue
+    timeout: 120
+    environment:
+      NODE_ENV: ${self:provider.stage}
+      OPERATOR_SQS_QUEUE: ${file(./creds/${self:provider.stage}/sqs_queues.js):vars.OPERATOR_SQS_QUEUE}
 
   # emailSplit:
   #   handler: handler.emailSplit
