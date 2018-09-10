@@ -1,7 +1,7 @@
 const axios = require('axios')
 const DATABASE_CONNECTION = require(`../../creds/${process.env.NODE_ENV}/API_URLS`).DATABASE_CONNECTION
 
-export.modules.sendNotifications = function(notification, clientTokenIds) {
+module.exports.sendNotifications = function(notification, clientTokenIds) {
   /**/
   const header = {
     headers: {
@@ -17,6 +17,29 @@ export.modules.sendNotifications = function(notification, clientTokenIds) {
       })
       .catch((err) => {
         console.log('Error POST/operators_for_push_notification')
+        console.log(err)
+        rej(err)
+      })
+  })
+  return p
+}
+
+module.exports.grab_firebase_tokens_by_proxy_id = function(proxy_id) {
+  /**/
+  const header = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  const p = new Promise((res, rej) => {
+    axios.post(`${DATABASE_CONNECTION}/grab_firebase_tokens_by_proxy_id`, { proxy_id, }, header)
+      .then((data) => {
+        console.log('Successful POST/grab_firebase_tokens_by_proxy_id')
+        console.log(data.data)
+        res(data.data)
+      })
+      .catch((err) => {
+        console.log('Error POST/grab_firebase_tokens_by_proxy_id')
         console.log(err)
         rej(err)
       })

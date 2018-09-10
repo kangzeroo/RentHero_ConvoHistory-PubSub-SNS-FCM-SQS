@@ -1,5 +1,6 @@
 const fcnAPI = require('../api/fcn/fcn_api')
 const sqsAPI = require('../api/sqs/sqs_api')
+const rdsAPI = require('../api/rds/rds_api')
 
 module.exports = function(event, context, callback) {
   console.log('------ pushToOperators() ------')
@@ -14,11 +15,13 @@ module.exports = function(event, context, callback) {
     "body" : "This is an FCM notification message!",
     "title" : "FCM Message",
   }
-  const clientTokenIds = [
 
-  ]
-  // grabRelevantOperators().then()...
-  fcnAPI.sendNotifications(notification, clientTokenIds)
+  rdsAPI.grab_firebase_tokens_by_proxy_id(JSON.parse(event.Records[0].Sns.Message).proxy_id)
+    .then((data) => {
+        const clientTokenIds = data.map(i => i.firebase_client_id)
+
+        return fcnAPI.sendNotifications(notification, clientTokenIds)
+    })
     .then((data) => {
       const params = {
         MessageBody: "Information about current NY Times fiction bestseller for week of 12/11/2016.",
