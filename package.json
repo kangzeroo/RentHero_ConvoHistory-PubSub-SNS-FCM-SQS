@@ -4,10 +4,11 @@
   "description": "",
   "main": "handler.js",
   "dependencies": {
-    "aws-sdk": "^2.300.0",
-    "axios": "^0.18.0",
-    "eslint-plugin-node": "^5.0.0",
-    "mailcomposer": "^4.0.2",
+    "aws-sdk": "2.300.0",
+    "axios": "0.18.0",
+    "eslint-plugin-node": "5.0.0",
+    "googleapis": "33.0.0",
+    "mailcomposer": "4.0.2",
     "moment": "2.22.2"
   },
   "devDependencies": {

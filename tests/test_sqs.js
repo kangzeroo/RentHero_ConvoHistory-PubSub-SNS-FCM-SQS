@@ -1,10 +1,10 @@
 const sqsAPI = require('../api/sqs/sqs_api')
 
-// $ NODE_ENV=development OPERATOR_SQS_URL="https://sqs.us-east-1.amazonaws.com/637888834967/Message_Notifications_For_Agents.fifo" node tests/test_sqs.js
+// $ NODE_ENV=development OPERATOR_SQS_URL="https://sqs.us-east-1.amazonaws.com/637888834967/ConvoHistory_Operator_Messages_Dev.fifo" node tests/test_sqs.js
 
 // const testSQSSend = () => {
 //   const params = {
-//     MessageBody: "Information about current NY Times fiction bestseller for week of 12/11/2016.",
+//     MessageBody: "On the way to the moon",
 //     QueueUrl: process.env.OPERATOR_SQS_URL,
 //     MessageGroupId: '111',
 //     DelaySeconds: 0,
@@ -37,6 +37,7 @@ const testSQSRetrieve = () => {
   sqsAPI.grabFromOperatorSQS(params)
     .then((data) => {
       console.log('SUCCESS')
+      console.log(data)
     })
     .catch((err) => {
       console.log(Object.getOwnPropertyNames(err))
