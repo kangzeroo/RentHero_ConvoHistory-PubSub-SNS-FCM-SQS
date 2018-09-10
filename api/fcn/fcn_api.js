@@ -3,7 +3,7 @@ const google = require('googleapis')
 const authHeaders = require('../authHeaders').authHeaders
 const PROJECT_ID = require(`../../creds/${process.env.NODE_ENV}/firebase_creds.json`).project_id
 
-export.modules.sendNotifications = function(notification, clientTokenIds) {
+module.exports.sendNotifications = function(notification, clientTokenIds) {
   /*
       const notification = {
         "body" : "This is an FCM notification message!",
