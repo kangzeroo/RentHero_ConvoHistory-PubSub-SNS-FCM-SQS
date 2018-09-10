@@ -7,6 +7,7 @@ module.exports = function(event, context, callback) {
   console.log(event)
   console.log(event.Records[0].Sns)
   console.log(JSON.parse(event.Records[0].Sns.Message))
+  console.log(JSON.parse(event.Records[0].Sns.Message).data)
   console.log('------ LAMBDA CONTEXT OBJECT ------')
   console.log(context)
   const notification = {
@@ -16,6 +17,7 @@ module.exports = function(event, context, callback) {
   const clientTokenIds = [
 
   ]
+  // grabRelevantOperators().then()...
   fcnAPI.sendNotifications(notification, clientTokenIds)
     .then((data) => {
       const params = {
