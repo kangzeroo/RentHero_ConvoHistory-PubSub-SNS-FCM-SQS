@@ -12,17 +12,24 @@ module.exports = function(event, context, callback) {
   console.log('------ LAMBDA CONTEXT OBJECT ------')
   console.log(context)
   const notification = {
-    "body" : "This is an FCM notification message!",
+    "body" : JSON.parse(event.Records[0].Sns.Message).data,
     "title" : "FCM Message",
   }
+  let proxy_id = JSON.parse(event.Records[0].Sns.Message).data.PROXY_ID
+  if (typeof proxy_id === 'string') {
+    proxy_id = parseInt(proxy_id, 10)
+  }
 
-  rdsAPI.grab_firebase_tokens_by_proxy_id(JSON.parse(event.Records[0].Sns.Message).proxy_id)
+  console.log('PROXY_ID: ', proxy_id)
+
+  rdsAPI.grab_firebase_tokens_by_proxy_id(proxy_id)
     .then((data) => {
         const clientTokenIds = data.map(i => i.firebase_client_id)
 
         return fcnAPI.sendNotifications(notification, clientTokenIds)
     })
     .then((data) => {
+      console.log('notification sent, now..')
       const params = {
         MessageBody: "Information about current NY Times fiction bestseller for week of 12/11/2016.",
         QueueUrl: process.env.OPERATOR_SQS_URL,

@@ -7,6 +7,7 @@ const sqs = new AWS.SQS({apiVersion: '2012-11-05'})
 
 module.exports.sendToOperatorSQS = function(params) {
   const p = new Promise((res, rej) => {
+    console.log('====sendToOperatorSQS')
     console.log(params)
     sqs.sendMessage(params, function(err, data) {
       if (err) {
