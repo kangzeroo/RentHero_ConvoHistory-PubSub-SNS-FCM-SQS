@@ -1,5 +1,6 @@
 const axios = require('axios')
 const { google } = require('googleapis')
+const moment = require('moment')
 const authHeaders = require('../authHeaders').authHeaders
 const PROJECT_ID = require(`../../creds/${process.env.NODE_ENV}/firebase_creds.json`).project_id
 
@@ -19,16 +20,29 @@ module.exports.sendNotifications = function(notification, clientTokenIds) {
     getAccessToken().then((access_token) => {
       console.log('access_token: ', access_token)
       const header = authHeaders(access_token)
-      const x = clientTokenIds.map((cid) => {
-        const msg = {
-          "message":{
-            "token" : cid,
-            "notification": notification
-           }
-        }
-        return axios.post(`https://fcm.googleapis.com/v1/projects/${PROJECT_ID}/messages:send`, msg, header) // { httpsAgent: agent })
-      })
-      return Promise.all(x)
+      console.log('SEEND: ', notification.body.SEEN)
+      if (moment(notification.body.SEEN).unix() === 0) {
+        const x = clientTokenIds.map((cid) => {
+          const msg = {
+            "message":{
+              "token" : cid,
+              "notification": {
+                title: `${notification.title} from ${notification.body.SENDER_CONTACT}`,
+                body: notification.body.MESSAGE
+              },
+              "data": {
+                data: JSON.stringify(notification.body)
+              }
+             }
+          }
+          console.log(header, JSON.stringify(msg))
+          return axios.post(`https://fcm.googleapis.com/v1/projects/${PROJECT_ID}/messages:send`, msg, header) // { httpsAgent: agent })
+        })
+        return Promise.all(x)
+      } else {
+        console.log('SEEN NOT FOUNd')
+        rej('DONT NEED TO SEND NOTIFICATION')
+      }
     })
     .then((data) => {
       // once we have the response, only then do we dispatch an action to Redux
@@ -36,6 +50,7 @@ module.exports.sendNotifications = function(notification, clientTokenIds) {
       res(data)
     })
     .catch((err) => {
+      console.log('ERROR IN sendNotifications: ', err)
       rej(err)
     })
   })
@@ -61,7 +76,8 @@ const getAccessToken = () => {
         rej(err)
         return
       }
-      console.log(tokens)
+      console.log('=====ACCESS TOKEN AUTHORIZED')
+      console.log('====Tokens: ', tokens)
       res(tokens.access_token)
     })
   })

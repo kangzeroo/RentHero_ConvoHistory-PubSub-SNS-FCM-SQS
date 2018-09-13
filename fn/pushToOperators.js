@@ -12,8 +12,8 @@ module.exports = function(event, context, callback) {
   console.log('------ LAMBDA CONTEXT OBJECT ------')
   console.log(context)
   const notification = {
-    "body" : JSON.parse(event.Records[0].Sns.Message).data,
-    "title" : "FCM Message",
+    "title" : "New Message",
+    "body" : JSON.parse(event.Records[0].Sns.Message).data
   }
   let proxy_id = JSON.parse(event.Records[0].Sns.Message).data.PROXY_ID
   if (typeof proxy_id === 'string') {
@@ -29,6 +29,8 @@ module.exports = function(event, context, callback) {
         return fcnAPI.sendNotifications(notification, clientTokenIds)
     })
     .then((data) => {
+      console.log('===fcnAPI.sendNotifications PASSED')
+      console.log(data)
       console.log('notification sent, now..')
       const params = {
         MessageBody: "Information about current NY Times fiction bestseller for week of 12/11/2016.",
@@ -55,6 +57,7 @@ module.exports = function(event, context, callback) {
       callback(null, response);
     })
     .catch((err) => {
+      console.log('ERROR IN MAIN: ', err)
       const response = {
         statusCode: 500,
         body: JSON.stringify({
