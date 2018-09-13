@@ -20,7 +20,9 @@ module.exports.sendNotifications = function(notification, clientTokenIds) {
     getAccessToken().then((access_token) => {
       console.log('access_token: ', access_token)
       const header = authHeaders(access_token)
-      console.log('SEEND: ', notification.body.SEEN)
+      console.log('SEEN: ', notification.body.SEEN)
+
+      // This is to check if the insertion into Dynamo is for new messages (SEEN === UNIX 0) or updated messages
       if (moment(notification.body.SEEN).unix() === 0) {
         const x = clientTokenIds.map((cid) => {
           const msg = {
