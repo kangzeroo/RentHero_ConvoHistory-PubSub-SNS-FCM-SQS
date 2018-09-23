@@ -28,12 +28,10 @@ module.exports.sendNotifications = function(notification, clientTokenIds) {
           const msg = {
             "message":{
               "token" : cid,
-              "notification": {
-                title: `${notification.title} from ${notification.body.SENDER_CONTACT}`,
-                body: notification.body.MESSAGE
-              },
               "data": {
-                data: JSON.stringify(notification.body)
+                title: `${notification.title} from ${notification.body.SENDER_CONTACT}`,
+                body: notification.body.MESSAGE,
+                json: JSON.stringify(notification.body)
               }
              }
           }

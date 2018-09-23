@@ -28,24 +28,24 @@ module.exports = function(event, context, callback) {
 
         return fcnAPI.sendNotifications(notification, clientTokenIds)
     })
-    .then((data) => {
-      console.log('===fcnAPI.sendNotifications PASSED')
-      console.log(data)
-      console.log('notification sent, now..')
-      const params = {
-        MessageBody: "Information about current NY Times fiction bestseller for week of 12/11/2016.",
-        QueueUrl: process.env.OPERATOR_SQS_URL,
-        MessageGroupId: '1111',
-        DelaySeconds: 0,
-        MessageAttributes: {
-          'Title': {
-            DataType: 'String', /* required */
-            StringValue: 'Hello'
-          }
-        }
-      }
-      return sqsAPI.sendToOperatorSQS(params)
-    })
+    // .then((data) => {
+    //   console.log('===fcnAPI.sendNotifications PASSED')
+    //   console.log(data)
+    //   console.log('notification sent, now..')
+    //   const params = {
+    //     MessageBody: "Information about current NY Times fiction bestseller for week of 12/11/2016.",
+    //     QueueUrl: process.env.OPERATOR_SQS_URL,
+    //     MessageGroupId: '1111',
+    //     DelaySeconds: 0,
+    //     MessageAttributes: {
+    //       'Title': {
+    //         DataType: 'String', /* required */
+    //         StringValue: 'Hello'
+    //       }
+    //     }
+    //   }
+    //   return sqsAPI.sendToOperatorSQS(params)
+    // })
     .then((data) => {
       const response = {
         statusCode: 200,
