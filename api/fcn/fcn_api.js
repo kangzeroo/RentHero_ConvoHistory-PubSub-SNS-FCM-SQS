@@ -30,7 +30,9 @@ module.exports.sendNotifications = function(notification, clientTokenIds) {
               "token" : cid,
               "notification": {
                 title: `${notification.title} from ${notification.body.SENDER_CONTACT}`,
-                body: notification.body.MESSAGE
+                body: JSON.stringify(notification.body),
+                // icon: '...png',
+                // click_action: ''
               },
               "data": {
                 data: JSON.stringify(notification.body)

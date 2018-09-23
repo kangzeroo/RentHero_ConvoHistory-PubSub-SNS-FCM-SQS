@@ -1,10 +1,10 @@
 const sqsAPI = require('../api/sqs/sqs_api')
 
-// $ NODE_ENV=development OPERATOR_SQS_URL="https://sqs.us-east-1.amazonaws.com/637888834967/ConvoHistory_Operator_Messages_Dev.fifo" node tests/test_sqs.js
+// $ NODE_ENV=development OPERATOR_SQS_URL="https://sqs.us-east-1.amazonaws.com/637888834967/ConvoHistory_Operator_Messages_DEV.fifo" node tests/test_sqs.js
 
 // const testSQSSend = () => {
 //   const params = {
-//     MessageBody: "On the way to the moon",
+//     MessageBody: "Nigga fuck the police",
 //     QueueUrl: process.env.OPERATOR_SQS_URL,
 //     MessageGroupId: '111',
 //     DelaySeconds: 0,
@@ -22,6 +22,7 @@ const sqsAPI = require('../api/sqs/sqs_api')
 //     })
 //     .catch((err) => {
 //       console.log(Object.getOwnPropertyNames(err))
+//       console.log(err.code, err.name)
 //       console.log(err.message)
 //       console.log('FAILURE')
 //     })
@@ -32,7 +33,9 @@ const sqsAPI = require('../api/sqs/sqs_api')
 
 const testSQSRetrieve = () => {
   const params = {
-    QueueUrl: process.env.OPERATOR_SQS_URL
+    QueueUrl: process.env.OPERATOR_SQS_URL,
+    MaxNumberOfMessages: 10,
+    WaitTimeSeconds: 5
   }
   sqsAPI.grabFromOperatorSQS(params)
     .then((data) => {

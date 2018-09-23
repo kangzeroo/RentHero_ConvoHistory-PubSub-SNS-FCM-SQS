@@ -25,7 +25,6 @@ module.exports = function(event, context, callback) {
   rdsAPI.grab_firebase_tokens_by_proxy_id(proxy_id)
     .then((data) => {
         const clientTokenIds = data.map(i => i.firebase_client_id)
-
         return fcnAPI.sendNotifications(notification, clientTokenIds)
     })
     .then((data) => {
