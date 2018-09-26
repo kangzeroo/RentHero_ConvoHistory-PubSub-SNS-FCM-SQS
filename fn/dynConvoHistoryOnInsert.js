@@ -51,11 +51,45 @@ module.exports = function(event, context, callback) {
       .catch((err) => {
         reportIssue(callback, err, context)
       })
+  } else if (ENTRY.SENDER_TYPE === 'OPERATOR_ID') {
+    const params = {
+      Message: JSON.stringify({
+        default: 'Message Sent',
+        data: ENTRY
+      }), /* required */
+      // MessageAttributes: {
+      //   '<String>': {
+      //     DataType: 'STRING_VALUE', /* required */
+      //     // BinaryValue: 'STRING_VALUE' /* Strings will be Base-64 encoded on your behalf */,
+      //     // StringValue: 'STRING_VALUE'
+      //   },
+      //   /* '<String>': ... */
+      // },
+      // MessageStructure: 'json',
+      // PhoneNumber: 'STRING_VALUE',
+      // Subject: 'STRING_VALUE',
+      // TargetArn: 'STRING_VALUE',
+      TopicArn: process.env.NEW_MESSAGE_SNS_TOPIC_ARN
+    }
+    snsAPI.publishSNSTopic(params)
+      .then((data) => {
+        const response = {
+          statusCode: 200,
+          body: JSON.stringify({
+            message: 'Your function (dynConvoHistoryOnInsert) executed successfully!',
+            input: event,
+          }),
+        };
+        callback(null, response);
+      })
+      .catch((err) => {
+        reportIssue(callback, err, context)
+      })
   } else {
     const response = {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Your function (dynConvoHistoryOnInsert) executed successfully!',
+        message: 'Go Serverless v1.0! Your function (dynConvoHistoryOnInsert) executed successfully!',
         input: event,
       }),
     };
